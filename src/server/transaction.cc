@@ -499,6 +499,7 @@ void Transaction::MultiSwitchCmd(const CommandId* cid) {
   DCHECK(multi_);
   DCHECK(!cb_ptr_);
 
+  time_now_ms_ = 0;
   multi_->cmd_seq_num++;
 
   if (multi_->role != SQUASHED_STUB)  // stub transactions don't migrate between threads

