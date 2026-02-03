@@ -70,6 +70,8 @@ bool BlockingController::DbWatchTable::UnwatchTx(string_view key, Transaction* t
 
   bool res = false;
   if (wq->state == WatchQueue::ACTIVE && wq->items.front().get() == tx) {
+    if (!wq->items.empty())
+      awakened_keys.insert(wq_it->first);
     wq->items.pop_front();
 
     // We suspend the queue and add keys to re-verification.

