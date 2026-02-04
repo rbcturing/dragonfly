@@ -1241,6 +1241,7 @@ bool Transaction::ScheduleInShard(EngineShard* shard, bool execute_optimistic) {
   if (!txq->Empty() && txid_ < txq->TailScore() && !lock_granted) {
     if (sd.local_mask & KEYLOCK_ACQUIRED) {
       release_fp_locks();
+      sd.local_mask &= ~KEYLOCK_ACQUIRED;
     }
     return false;
   }

