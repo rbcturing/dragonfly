@@ -191,7 +191,7 @@ OpResult<StringResult> OpGetRange(const OpArgs& op_args, string_view key, int32_
       end = strlen + end;
       end = max(end, 0);
     } else {
-      end = min(end, strlen);
+      end = min(end, strlen - 1);
     }
 
     if (start > end) {
