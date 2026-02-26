@@ -768,7 +768,8 @@ void Transaction::ScheduleInternal() {
 
       // single shard schedule operation can't fail
       CHECK(ScheduleInShard(EngineShard::tlocal(), optimistic_exec));
-      run_barrier_.Dec();
+      if (!optimistic_exec)
+        run_barrier_.Dec();
       break;
     }
 

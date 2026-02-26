@@ -326,6 +326,14 @@ auto RedisParser::ConsumeArrayLen(Buffer str) -> ResultConsumed {
     return {BAD_STRING, res.second};
 
   if (len <= 0) {
+    if (server_mode_ && len == 0) {
+      if (parse_stack_.empty()) {
+        state_ = CMD_COMPLETE_S;
+      } else {
+        HandleFinishArg();
+      }
+      return {OK, res.second};
+    }
     if (len < 0) {
       cached_expr_->emplace_back(RespExpr::NIL_ARRAY);
       cached_expr_->back().u.emplace<RespVec*>(nullptr);  // nil

