@@ -210,7 +210,7 @@ std::size_t CountBitSet(string_view str, int64_t start, int64_t end, bool bits) 
   if (end < 0)
     end = strlen + end;
 
-  end = min(end, strlen);
+  end = min(end, strlen - 1);
 
   if (strlen == 0 || start > end)
     return 0;

